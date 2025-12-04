@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useProductSelection } from '../hooks/useProductSelection'
 import { solveTSP } from '../utils/tspSolver'
@@ -8,8 +8,9 @@ import InteractiveGrid from './Grid/InteractiveGrid'
 /**
  * SelectionScreen component - allows users to select products on the grid
  */
-function SelectionScreen({ onSolve }) {
+function SelectionScreen() {
   const { t } = useLanguage()
+  const navigate = useNavigate()
   const {
     selectedProducts,
     toggleProduct,
@@ -20,7 +21,14 @@ function SelectionScreen({ onSolve }) {
   const handleSolve = () => {
     const products = getProductsArray()
     const solution = solveTSP(products)
-    onSolve(solution, products)
+    navigate('/navigation', { 
+      state: { 
+        solution,
+        products,
+        productsWithIcons: null,
+        from: '/grid'
+      } 
+    })
   }
 
   return (
@@ -57,8 +65,5 @@ function SelectionScreen({ onSolve }) {
   )
 }
 
-SelectionScreen.propTypes = {
-  onSolve: PropTypes.func.isRequired,
-}
 
 export default React.memo(SelectionScreen)

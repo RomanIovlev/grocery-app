@@ -1,39 +1,53 @@
-import { useState, useCallback } from 'react'
-import LanguageSwitcher from './components/LanguageSwitcher'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import Header from './components/Header'
 import SelectionScreen from './components/SelectionScreen'
+import BasketSelectionScreen from './components/BasketSelectionScreen'
 import NavigationScreen from './components/NavigationScreen'
 import { LanguageProvider } from './contexts/LanguageContext'
+
+/**
+ * Navigation wrapper component to handle route-based navigation
+ */
+function NavigationWrapper() {
+  const location = useLocation()
+
+  return (
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Navigate to="/basket" replace />} />
+        <Route
+          path="/basket"
+          element={<BasketSelectionScreen />}
+        />
+        <Route
+          path="/grid"
+          element={<SelectionScreen />}
+        />
+        <Route
+          path="/navigation"
+          element={
+            <NavigationScreen
+              solution={location.state?.solution}
+              products={location.state?.products}
+              productsWithIcons={location.state?.productsWithIcons}
+            />
+          }
+        />
+      </Routes>
+    </>
+  )
+}
 
 /**
  * Main App component
  */
 function App() {
-  const [currentScreen, setCurrentScreen] = useState('selection')
-  const [solution, setSolution] = useState(null)
-  const [productsForSolution, setProductsForSolution] = useState(null)
-
-  const handleSolve = useCallback((sol, products) => {
-    setSolution(sol)
-    setProductsForSolution(products)
-    setCurrentScreen('navigation')
-  }, [])
-
-  const handleBack = useCallback(() => {
-    setCurrentScreen('selection')
-  }, [])
-
   return (
     <LanguageProvider>
-      <LanguageSwitcher />
-      {currentScreen === 'selection' ? (
-        <SelectionScreen onSolve={handleSolve} />
-      ) : (
-        <NavigationScreen
-          solution={solution}
-          products={productsForSolution}
-          onBack={handleBack}
-        />
-      )}
+      <BrowserRouter>
+        <NavigationWrapper />
+      </BrowserRouter>
     </LanguageProvider>
   )
 }

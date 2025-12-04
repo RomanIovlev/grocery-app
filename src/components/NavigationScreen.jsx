@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useMemo } from 'react'
 import PropTypes from 'prop-types'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 import { GRID_SIZE, ENTRANCE, EXIT, ANIMATION_INITIAL_DELAY } from '../constants/grid'
 import { FRUITS_VEGETABLES } from '../constants/products'
@@ -12,28 +13,47 @@ import GridSVG from './Grid/GridSVG'
 /**
  * NavigationScreen component - displays the calculated route with visualization
  */
-function NavigationScreen({ solution, products, onBack }) {
+function NavigationScreen({ solution, products, productsWithIcons }) {
   const { t } = useLanguage()
+  const navigate = useNavigate()
+  const location = useLocation()
   const svgRef = useRef(null)
   const gridRef = useRef(null)
   const gridWrapperRef = useRef(null)
   const { getTotalSize, getNodePosition } = useGrid()
   const { animatePath } = usePathAnimation()
 
+  // Get solution and products from location state if not provided as props
+  const finalSolution = solution || location.state?.solution
+  const finalProducts = products || location.state?.products
+  const finalProductsWithIcons = productsWithIcons || location.state?.productsWithIcons
+
+  const handleBack = () => {
+    const from = location.state?.from || '/basket'
+    navigate(from)
+  }
+
   // Create product icon map
   const productIconMap = useMemo(() => {
     const map = new Map()
-    if (products) {
-      products.forEach(([x, y], index) => {
+    if (finalProductsWithIcons && finalProductsWithIcons.length > 0) {
+      // Use provided products with icons
+      finalProductsWithIcons.forEach((item) => {
+        const [x, y] = item.coords
+        map.set(`${x},${y}`, item.icon)
+      })
+    } else if (finalProducts) {
+      // Fallback to generating icons by index
+      finalProducts.forEach(([x, y], index) => {
         map.set(`${x},${y}`, FRUITS_VEGETABLES[index % FRUITS_VEGETABLES.length])
       })
     }
     return map
-  }, [products])
+  }, [finalProducts, finalProductsWithIcons])
 
   // Render grid and path
   useEffect(() => {
-    if (!solution || !products || !svgRef.current || !gridRef.current || !gridWrapperRef.current) {
+    if (!finalSolution || !finalProducts || !svgRef.current || !gridRef.current || !gridWrapperRef.current) {
       return
     }
 
@@ -116,8 +136,8 @@ function NavigationScreen({ solution, products, onBack }) {
     }
 
     // Draw path arcs
-    if (solution.path && solution.path.length > 0) {
-      solution.path.forEach(([from, to], index) => {
+    if (finalSolution.path && finalSolution.path.length > 0) {
+      finalSolution.path.forEach(([from, to], index) => {
         const fromCenter = getNodeCenter(from[0], from[1])
         const toCenter = getNodeCenter(to[0], to[1])
         const dx = toCenter.x - fromCenter.x
@@ -142,19 +162,19 @@ function NavigationScreen({ solution, products, onBack }) {
 
     // Start animation after a delay
     const timeoutId = setTimeout(() => {
-      animatePath(svg, solution.path?.length || 0)
+      animatePath(svg, finalSolution.path?.length || 0)
     }, ANIMATION_INITIAL_DELAY)
 
     return () => {
       clearTimeout(timeoutId)
     }
-  }, [solution, products, getTotalSize, getNodePosition, productIconMap, animatePath])
+  }, [finalSolution, finalProducts, getTotalSize, getNodePosition, productIconMap, animatePath])
 
   const instructions = useMemo(() => {
-    return solution && products
-      ? generateNavigationInstructions(solution.path, products, t)
+    return finalSolution && finalProducts
+      ? generateNavigationInstructions(finalSolution.path, finalProducts, t)
       : []
-  }, [solution, products, t])
+  }, [finalSolution, finalProducts, t])
 
   return (
     <div className="screen active">
@@ -164,7 +184,7 @@ function NavigationScreen({ solution, products, onBack }) {
           <h1>{t('navigationTitle')}</h1>
         </div>
 
-        <button onClick={onBack} className="ah-back-btn" type="button">
+        <button onClick={handleBack} className="ah-back-btn" type="button">
           {t('back')}
         </button>
 
@@ -205,7 +225,12 @@ NavigationScreen.propTypes = {
     totalDistance: PropTypes.number,
   }),
   products: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
-  onBack: PropTypes.func.isRequired,
+  productsWithIcons: PropTypes.arrayOf(
+    PropTypes.shape({
+      coords: PropTypes.arrayOf(PropTypes.number),
+      icon: PropTypes.string,
+    })
+  ),
 }
 
 export default React.memo(NavigationScreen)
