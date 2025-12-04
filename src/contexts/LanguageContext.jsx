@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState, useCallback } from 'react'
+import PropTypes from 'prop-types'
 
 const translations = {
   en: {
@@ -37,10 +38,14 @@ const translations = {
 
 const LanguageContext = createContext()
 
+LanguageProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+}
+
 export function LanguageProvider({ children }) {
   const [currentLanguage, setCurrentLanguage] = useState('nl')
 
-  const t = React.useCallback((key, params = {}) => {
+  const t = useCallback((key, params = {}) => {
     let text = translations[currentLanguage][key] || translations.en[key] || key
     if (params) {
       Object.keys(params).forEach(param => {
@@ -57,6 +62,7 @@ export function LanguageProvider({ children }) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useLanguage() {
   return useContext(LanguageContext)
 }

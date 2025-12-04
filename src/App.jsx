@@ -1,23 +1,26 @@
-import React, { useState } from 'react'
+import { useState, useCallback } from 'react'
 import LanguageSwitcher from './components/LanguageSwitcher'
 import SelectionScreen from './components/SelectionScreen'
 import NavigationScreen from './components/NavigationScreen'
 import { LanguageProvider } from './contexts/LanguageContext'
 
+/**
+ * Main App component
+ */
 function App() {
   const [currentScreen, setCurrentScreen] = useState('selection')
   const [solution, setSolution] = useState(null)
   const [productsForSolution, setProductsForSolution] = useState(null)
 
-  const handleSolve = (sol, products) => {
+  const handleSolve = useCallback((sol, products) => {
     setSolution(sol)
     setProductsForSolution(products)
     setCurrentScreen('navigation')
-  }
+  }, [])
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     setCurrentScreen('selection')
-  }
+  }, [])
 
   return (
     <LanguageProvider>
@@ -25,7 +28,7 @@ function App() {
       {currentScreen === 'selection' ? (
         <SelectionScreen onSolve={handleSolve} />
       ) : (
-        <NavigationScreen 
+        <NavigationScreen
           solution={solution}
           products={productsForSolution}
           onBack={handleBack}
@@ -36,4 +39,3 @@ function App() {
 }
 
 export default App
-

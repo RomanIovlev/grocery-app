@@ -1,7 +1,4 @@
-// Grid constants
-export const GRID_SIZE = 4
-export const ENTRANCE = [0, 0]
-export const EXIT = [3, 0]
+import { GRID_SIZE, ENTRANCE, EXIT } from '../constants/grid'
 
 // Check if horizontal movement is allowed
 export function canMoveHorizontally(y) {
