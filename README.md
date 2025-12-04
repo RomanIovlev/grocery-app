@@ -1,36 +1,36 @@
-# Задача коммивояжера - Магазин
+# Traveling Salesman Problem - Store
 
-Веб-приложение для решения упрощенной задачи коммивояжера в магазине с полками.
+Web application for solving a simplified traveling salesman problem in a store with shelves.
 
-## Описание
+## Description
 
-Магазин представлен сеткой 4x4:
-- **Вход (I)**: (0,0) - зеленая ячейка
-- **Выход (O)**: (3,0) - красная ячейка
-- **Продукты (P)**: оранжевые ячейки
+The store is represented as a 4x4 grid:
 
-## Правила движения
+- **Entrance (I)**: (0,0) - green cell
+- **Exit (O)**: (3,0) - red cell
+- **Products (P)**: orange cells
 
-- Можно всегда двигаться **вертикально** (по оси Y)
-- Можно двигаться **горизонтально** (по оси X) только на линиях y=0 или y=3
+## Movement Rules
 
-## Использование
+- You can always move **vertically** (along the Y axis)
+- You can move **horizontally** (along the X axis) only on lines y=0 or y=3
 
-1. Откройте `index.html` в браузере
-2. Введите координаты продуктов в формате: `(x,y),(x,y),...`
-   - Пример: `(0,1),(1,2),(2,3)`
-3. Нажмите кнопку "Найти оптимальный путь"
-4. Приложение найдет оптимальный маршрут и визуализирует его
+## Usage
 
-## Визуализация
+1. Open `index.html` in your browser
+2. Enter product coordinates in the format: `(x,y),(x,y),...`
+   - Example: `(0,1),(1,2),(2,3)`
+3. Click the "Find optimal path" button
+4. The application will find the optimal route and visualize it
 
-- **Зеленая ячейка (I)**: Вход
-- **Красная ячейка (O)**: Выход
-- **Оранжевые ячейки (P)**: Продукты
-- **Синие ячейки**: Путь
-- **Фиолетовая ячейка**: Текущая позиция (анимация)
+## Visualization
 
-## Алгоритм
+- **Green cell (I)**: Entrance
+- **Red cell (O)**: Exit
+- **Orange cells (P)**: Products
+- **Blue cells**: Path
+- **Purple cell**: Current position (animation)
 
-Приложение использует алгоритм полного перебора всех перестановок продуктов для нахождения оптимального пути с минимальным количеством ходов.
+## Algorithm
 
+The application uses a brute force algorithm that checks all permutations of products to find the optimal path with the minimum number of moves.
