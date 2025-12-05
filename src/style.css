@@ -247,19 +247,27 @@ h2 {
 }
 
 .input-node.entrance {
-    background: #00ADE6;
-    border-color: #0099CC;
-    box-shadow: 0 4px 15px rgba(0, 173, 230, 0.4);
+    background: #4CAF50;
+    border-color: #45a049;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.5);
     cursor: default;
-    font-size: 20px;
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    border-width: 4px;
+    z-index: 3;
 }
 
 .input-node.exit {
-    background: #00ADE6;
-    border-color: #0099CC;
-    box-shadow: 0 4px 15px rgba(0, 173, 230, 0.4);
+    background: #FF9800;
+    border-color: #F57C00;
+    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.5);
     cursor: default;
-    font-size: 20px;
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    border-width: 4px;
+    z-index: 3;
 }
 
 .input-node.product {
@@ -267,6 +275,62 @@ h2 {
     border-color: #ff9800;
     box-shadow: 0 0 10px rgba(255, 152, 0, 0.4);
     font-size: 20px;
+}
+
+.input-node.current {
+    background: #2196F3;
+    border-color: #1976D2;
+    box-shadow: 0 0 15px rgba(33, 150, 243, 0.6);
+    font-size: 22px;
+    animation: pulse 1.5s infinite;
+    z-index: 4;
+}
+
+.input-node.collected {
+    opacity: 0.6;
+    background: #e8f5e9;
+    border-color: #4CAF50;
+}
+
+.input-node.collected::after {
+    content: '✓';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #4CAF50;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    border: 2px solid white;
+}
+
+.input-node.clickable {
+    border-color: #2196F3;
+    border-width: 3px;
+    box-shadow: 0 0 12px rgba(33, 150, 243, 0.6);
+    cursor: pointer;
+    animation: clickable-pulse 2s infinite;
+}
+
+.input-node.clickable:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 18px rgba(33, 150, 243, 0.8);
+    border-width: 4px;
+}
+
+@keyframes clickable-pulse {
+    0%, 100% {
+        box-shadow: 0 0 12px rgba(33, 150, 243, 0.6);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(33, 150, 243, 0.9);
+    }
 }
 
 .input-node.empty {
@@ -408,10 +472,6 @@ h2 {
     .navigation-content {
         grid-template-columns: 1fr;
     }
-
-    .app-options {
-        grid-template-columns: 1fr;
-    }
     
     .basket-products {
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -495,19 +555,25 @@ h2 {
 }
 
 .node.entrance {
-    background: #00ADE6;
-    border-color: #0099CC;
-    box-shadow: 0 4px 15px rgba(0, 173, 230, 0.4);
+    background: #4CAF50;
+    border-color: #45a049;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.5);
     z-index: 3;
-    font-size: 20px;
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    border-width: 4px;
 }
 
 .node.exit {
-    background: #00ADE6;
-    border-color: #0099CC;
-    box-shadow: 0 4px 15px rgba(0, 173, 230, 0.4);
+    background: #FF9800;
+    border-color: #F57C00;
+    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.5);
     z-index: 3;
-    font-size: 20px;
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    border-width: 4px;
 }
 
 .node.product {
@@ -597,58 +663,6 @@ h2 {
     margin-top: 15px;
 }
 
-/* App Selection Screen */
-.app-selection-section {
-    text-align: center;
-    padding: 20px;
-}
-
-.app-selection-section p {
-    color: #666;
-    margin-bottom: 30px;
-    font-size: 1.1em;
-}
-
-.app-options {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-top: 30px;
-}
-
-.app-option-btn {
-    background: white;
-    border: 3px solid #00ADE6;
-    border-radius: 12px;
-    padding: 30px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 173, 230, 0.15);
-}
-
-.app-option-btn:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 173, 230, 0.3);
-    border-color: #0099CC;
-}
-
-.app-option-icon {
-    font-size: 4em;
-    margin-bottom: 15px;
-}
-
-.app-option-btn h2 {
-    color: #00ADE6;
-    margin-bottom: 10px;
-    font-size: 1.5em;
-}
-
-.app-option-btn p {
-    color: #666;
-    font-size: 0.95em;
-    margin: 0;
-}
 
 /* Basket Selection Screen */
 .basket-container {
@@ -744,6 +758,73 @@ h2 {
 .basket-summary strong {
     color: #00ADE6;
     font-size: 1.2em;
+}
+
+/* Game Screen Styles */
+.game-info {
+    display: flex;
+    justify-content: space-around;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #e0e0e0;
+}
+
+.game-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.stat-label {
+    font-size: 0.9em;
+    color: #666;
+    font-weight: normal;
+}
+
+.stat-value {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #00ADE6;
+}
+
+.stat-value.warning {
+    color: #f44336;
+}
+
+.game-message {
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.game-message.success {
+    background: #e8f5e9;
+    border: 2px solid #4CAF50;
+    color: #2e7d32;
+}
+
+.game-message.failure {
+    background: #ffebee;
+    border: 2px solid #f44336;
+    color: #c62828;
+}
+
+.game-message h2 {
+    margin-bottom: 10px;
+    color: inherit;
+}
+
+.game-message p {
+    margin: 0;
+    color: inherit;
+}
+
+.game-actions {
+    margin-top: 20px;
 }
 
 

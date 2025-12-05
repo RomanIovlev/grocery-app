@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { GRID_SIZE, ENTRANCE, EXIT } from '../../constants/grid'
 import { getAllowedArcs } from '../../utils/tspSolver'
+import { getAdjacentNodes } from '../../utils/gameUtils'
 import { useGrid } from '../../hooks/useGrid'
 import GridNode from './GridNode'
 import SVGLine from './SVGLine'
@@ -10,13 +11,26 @@ import GridSVG from './GridSVG'
 /**
  * InteractiveGrid component - renders an interactive grid for product selection
  */
-function InteractiveGrid({ selectedProducts, onNodeClick, className = '' }) {
+function InteractiveGrid({ selectedProducts, onNodeClick, className = '', currentPosition, gameMode = false }) {
   const { getTotalSize, getNodePosition } = useGrid()
 
   const totalSize = useMemo(() => getTotalSize(), [getTotalSize])
   const allowedArcs = useMemo(() => getAllowedArcs(), [])
 
+  // Get clickable nodes in game mode
+  const clickableNodes = useMemo(() => {
+    if (gameMode && currentPosition) {
+      return new Set(
+        getAdjacentNodes(currentPosition).map(([x, y]) => `${x},${y}`)
+      )
+    }
+    return new Set()
+  }, [gameMode, currentPosition])
+
   const getNodeType = (x, y) => {
+    if (gameMode && currentPosition && currentPosition[0] === x && currentPosition[1] === y) {
+      return 'current'
+    }
     if (x === ENTRANCE[0] && y === ENTRANCE[1]) return 'entrance'
     if (x === EXIT[0] && y === EXIT[1]) return 'exit'
     if (selectedProducts.has(`${x},${y}`)) return 'product'
@@ -25,7 +39,24 @@ function InteractiveGrid({ selectedProducts, onNodeClick, className = '' }) {
 
   const getNodeIcon = (x, y) => {
     const product = selectedProducts.get(`${x},${y}`)
+    if (product?.collected && gameMode) {
+      // Show checkmark for collected products in game mode
+      return '✓'
+    }
     return product?.icon || null
+  }
+  
+  const getNodeClassName = (x, y) => {
+    const classes = []
+    const product = selectedProducts.get(`${x},${y}`)
+    if (product?.collected && gameMode) {
+      classes.push('collected')
+    }
+    // Highlight clickable nodes in game mode
+    if (gameMode && clickableNodes.has(`${x},${y}`)) {
+      classes.push('clickable')
+    }
+    return classes.join(' ')
   }
 
   return (
@@ -56,6 +87,7 @@ function InteractiveGrid({ selectedProducts, onNodeClick, className = '' }) {
                 onClick={onNodeClick}
                 position={position}
                 useInputClass={true}
+                className={getNodeClassName(x, y)}
               />
             )
           })
@@ -69,6 +101,8 @@ InteractiveGrid.propTypes = {
   selectedProducts: PropTypes.instanceOf(Map).isRequired,
   onNodeClick: PropTypes.func.isRequired,
   className: PropTypes.string,
+  currentPosition: PropTypes.arrayOf(PropTypes.number),
+  gameMode: PropTypes.bool,
 }
 
 export default React.memo(InteractiveGrid)

@@ -9,7 +9,6 @@ import { getAvailableProducts } from '../utils/productUtils'
 
 /**
  * BasketSelectionScreen component - allows users to select products in a basket
- * Grid is hidden initially, shown after clicking "find route"
  */
 function BasketSelectionScreen() {
   const { t } = useLanguage()

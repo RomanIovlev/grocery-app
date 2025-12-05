@@ -7,16 +7,18 @@ import { ENTRANCE_ICON, EXIT_ICON } from '../../constants/grid'
  */
 function GridNode({ x, y, nodeType, icon, label, onClick, className = '', position, useInputClass = false }) {
   const baseClass = useInputClass ? 'input-node' : 'node'
-  const baseClassName = `${baseClass} ${nodeType} ${className}`.trim()
+  const additionalClass = className ? ` ${className}` : ''
+  const baseClassName = `${baseClass} ${nodeType}${additionalClass}`.trim()
 
   const getContent = () => {
     if (nodeType === 'entrance') return ENTRANCE_ICON
     if (nodeType === 'exit') return EXIT_ICON
+    if (nodeType === 'current') return '📍'
     if (nodeType === 'product' && icon) return icon
     return ''
   }
 
-  const isClickable = onClick && nodeType !== 'entrance' && nodeType !== 'exit'
+  const isClickable = onClick && (nodeType === 'empty' || nodeType === 'product' || nodeType === 'current' || nodeType === 'exit')
 
   const style = {
     cursor: isClickable ? 'pointer' : 'default',
@@ -66,7 +68,7 @@ function GridNode({ x, y, nodeType, icon, label, onClick, className = '', positi
 GridNode.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
-  nodeType: PropTypes.oneOf(['entrance', 'exit', 'product', 'empty']).isRequired,
+  nodeType: PropTypes.oneOf(['entrance', 'exit', 'product', 'empty', 'current']).isRequired,
   icon: PropTypes.string,
   label: PropTypes.string,
   onClick: PropTypes.func,

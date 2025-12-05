@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
-import { GRID_SIZE, ENTRANCE, EXIT, ANIMATION_INITIAL_DELAY } from '../constants/grid'
+import { GRID_SIZE, ENTRANCE, EXIT, ANIMATION_INITIAL_DELAY, ENTRANCE_ICON, EXIT_ICON } from '../constants/grid'
 import { FRUITS_VEGETABLES } from '../constants/products'
 import { getAllowedArcs, generateNavigationInstructions } from '../utils/tspSolver'
 import { useGrid } from '../hooks/useGrid'
@@ -119,9 +119,9 @@ function NavigationScreen({ solution, products, productsWithIcons }) {
         node.style.top = `${position.top}px`
 
         if (nodeType === 'entrance') {
-          node.textContent = '🛒'
+          node.textContent = ENTRANCE_ICON
         } else if (nodeType === 'exit') {
-          node.textContent = '💰'
+          node.textContent = EXIT_ICON
         } else if (icon) {
           node.textContent = icon
         }

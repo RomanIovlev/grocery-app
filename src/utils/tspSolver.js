@@ -243,19 +243,31 @@ export function generateNavigationInstructions(path, products, t) {
     
     // Determine if turning is needed
     if (moveDirection !== currentDirection) {
-      // Turn needed
-      if ((currentDirection === 'east' && moveDirection === 'south') ||
-          (currentDirection === 'south' && moveDirection === 'west') ||
-          (currentDirection === 'west' && moveDirection === 'north') ||
-          (currentDirection === 'north' && moveDirection === 'east')) {
+      // Check for 180-degree turn (U-turn)
+      if ((currentDirection === 'east' && moveDirection === 'west') ||
+          (currentDirection === 'west' && moveDirection === 'east') ||
+          (currentDirection === 'north' && moveDirection === 'south') ||
+          (currentDirection === 'south' && moveDirection === 'north')) {
+        // 180-degree turn - turn right twice (or left twice, but right-right is more natural)
         instructions.push(`${stepNumber}. ${t('turnRight')}`)
         stepNumber++
-      } else if ((currentDirection === 'east' && moveDirection === 'north') ||
-                 (currentDirection === 'north' && moveDirection === 'west') ||
-                 (currentDirection === 'west' && moveDirection === 'south') ||
-                 (currentDirection === 'south' && moveDirection === 'east')) {
-        instructions.push(`${stepNumber}. ${t('turnLeft')}`)
+        instructions.push(`${stepNumber}. ${t('turnRight')}`)
         stepNumber++
+      } else {
+        // 90-degree turn
+        if ((currentDirection === 'east' && moveDirection === 'south') ||
+            (currentDirection === 'south' && moveDirection === 'west') ||
+            (currentDirection === 'west' && moveDirection === 'north') ||
+            (currentDirection === 'north' && moveDirection === 'east')) {
+          instructions.push(`${stepNumber}. ${t('turnRight')}`)
+          stepNumber++
+        } else if ((currentDirection === 'east' && moveDirection === 'north') ||
+                   (currentDirection === 'north' && moveDirection === 'west') ||
+                   (currentDirection === 'west' && moveDirection === 'south') ||
+                   (currentDirection === 'south' && moveDirection === 'east')) {
+          instructions.push(`${stepNumber}. ${t('turnLeft')}`)
+          stepNumber++
+        }
       }
       currentDirection = moveDirection
     }

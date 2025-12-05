@@ -10,7 +10,7 @@ export const EXIT = [3, 0]
 
 // Icons
 export const ENTRANCE_ICON = '🛒'
-export const EXIT_ICON = '💰'
+export const EXIT_ICON = '💵'
 
 // SVG styling constants
 export const SVG_LINE_COLORS = {

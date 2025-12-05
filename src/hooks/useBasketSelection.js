@@ -1,5 +1,4 @@
 import { useState, useCallback, useMemo } from 'react'
-import { FRUITS_VEGETABLES } from '../constants/products'
 
 /**
  * Custom hook for managing basket-based product selection
@@ -25,18 +24,6 @@ export function useBasketSelection() {
         newMap.delete(productType)
       } else {
         newMap.set(productType, newQty)
-      }
-      return newMap
-    })
-  }, [])
-
-  const setProductQuantity = useCallback((productType, quantity) => {
-    setBasket((prev) => {
-      const newMap = new Map(prev)
-      if (quantity <= 0) {
-        newMap.delete(productType)
-      } else {
-        newMap.set(productType, quantity)
       }
       return newMap
     })
@@ -68,7 +55,6 @@ export function useBasketSelection() {
     basket,
     addProduct,
     removeProduct,
-    setProductQuantity,
     clearBasket,
     getBasketArray,
     totalItems,

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import Header from './components/Header'
 import SelectionScreen from './components/SelectionScreen'
 import BasketSelectionScreen from './components/BasketSelectionScreen'
+import GameScreen from './components/GameScreen'
 import NavigationScreen from './components/NavigationScreen'
 import { LanguageProvider } from './contexts/LanguageContext'
 
@@ -23,6 +24,10 @@ function NavigationWrapper() {
         <Route
           path="/grid"
           element={<SelectionScreen />}
+        />
+        <Route
+          path="/game"
+          element={<GameScreen />}
         />
         <Route
           path="/navigation"

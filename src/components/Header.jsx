@@ -11,11 +11,19 @@ function Header() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const currentMode = location.pathname.startsWith('/grid') ? 'grid' : 'basket'
+  const getCurrentMode = () => {
+    if (location.pathname.startsWith('/grid')) return 'grid'
+    if (location.pathname.startsWith('/game')) return 'game'
+    return 'basket'
+  }
+
+  const currentMode = getCurrentMode()
 
   const handleModeChange = (mode) => {
     if (mode === 'grid') {
       navigate('/grid')
+    } else if (mode === 'game') {
+      navigate('/game')
     } else {
       navigate('/basket')
     }
@@ -43,6 +51,15 @@ function Header() {
           >
             <span className="mode-icon">🛒</span>
             <span className="mode-text">{t('basketModeTitle')}</span>
+          </button>
+          <button
+            type="button"
+            className={`mode-btn ${currentMode === 'game' ? 'active' : ''}`}
+            onClick={() => handleModeChange('game')}
+            aria-pressed={currentMode === 'game'}
+          >
+            <span className="mode-icon">🎮</span>
+            <span className="mode-text">{t('gameModeTitle')}</span>
           </button>
         </div>
       </div>
