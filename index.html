@@ -4,65 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Albert Heijn - Route Optimizer</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="language-switcher">
-        <button id="langEn" class="lang-btn active">EN</button>
-        <button id="langNl" class="lang-btn">NL</button>
-    </div>
-    
-    <!-- Selection Screen -->
-    <div id="selectionScreen" class="screen active">
-        <div class="container">
-            <div class="ah-header">
-                <div class="ah-logo">AH</div>
-                <h1 data-i18n="title">Select Your Products</h1>
-            </div>
-            
-            <div class="input-section">
-                <p data-i18n="selectProductsDesc">Tap on a location to add a product. Tap again to remove.</p>
-                
-                <div class="input-grid-container">
-                    <div class="input-grid-wrapper">
-                        <svg id="inputSvg" class="input-svg"></svg>
-                        <div id="inputGrid" class="input-grid"></div>
-                    </div>
-                </div>
-                
-                <button id="solveBtn" class="ah-primary-btn" data-i18n="findPath">Find Products</button>
-                <button id="clearBtn" class="ah-secondary-btn" data-i18n="clearAll">Clear All</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Navigation Screen -->
-    <div id="navigationScreen" class="screen">
-        <div class="container">
-            <div class="ah-header">
-                <div class="ah-logo">AH</div>
-                <h1 data-i18n="navigationTitle">Your Shopping Route</h1>
-            </div>
-            
-            <button id="backBtn" class="ah-back-btn" data-i18n="back">← Back to Selection</button>
-            
-            <div class="navigation-content">
-                <div class="grid-container">
-                    <div class="grid-wrapper">
-                        <svg id="pathSvg" class="path-svg"></svg>
-                        <div id="grid" class="grid"></div>
-                    </div>
-                </div>
-
-                <div class="instructions-section">
-                    <h2 data-i18n="instructions">Navigation Instructions</h2>
-                    <div id="instructionsList" class="instructions-list"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="app.js"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>
-
